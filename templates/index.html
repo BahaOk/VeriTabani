@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Futbol Veritabanı</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Futbol Veritabanı Yönetimi</h1>
+
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h2 class="card-title">Takımlar ve Antrenörler</h2>
+            </div>
+            <div class="card-body">
+                <button id="takimlariGoster" class="btn btn-secondary mb-3">Takımları Göster</button>
+                <div id="takimlarListesi" style="display: none;">
+                    <ul id="takimlar" class="list-group mb-3"></ul>
+                    <button id="takimlariKapat" class="btn btn-danger">Takımları Kapat</button>
+                </div>
+
+                <button id="antrenorleriGoster" class="btn btn-secondary mb-3">Antrenörleri Göster</button>
+                <div id="antrenorlerListesi" style="display: none;">
+                    <ul id="antrenorler" class="list-group mb-3"></ul>
+                    <button id="antrenorleriKapat" class="btn btn-danger">Antrenörleri Kapat</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">
+                <h2 class="card-title">Veri Ekleme Formları</h2>
+            </div>
+            <div class="card-body">
+                <form id="antrenorEkleForm" class="mb-4">
+                    <h3>Antrenör Ekle</h3>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" name="antrenor_ad" placeholder="Antrenör Adı" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" name="antrenor_soyad" placeholder="Antrenör Soyadı" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" name="uyruk" placeholder="Uyruk" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="number" class="form-control" name="antrenor_yas" placeholder="Yaş" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Antrenör Ekle</button>
+                </form>
+
+                <form id="takimEkleForm" class="mb-4">
+                    <h3>Takım Ekle</h3>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" name="takim_isim" placeholder="Takım İsmi" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="date" class="form-control" name="kurulus" placeholder="Kuruluş Tarihi" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="number" class="form-control" name="antrenor_id" placeholder="Antrenör ID" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Takım Ekle</button>
+                </form>
+
+                <!-- 3. Oyuncu Ekle Formu -->
+                <form id="oyuncuEkleForm" class="mb-4">
+                    <h3>Oyuncu Ekle</h3>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" name="oyuncu_isim" placeholder="Oyuncu İsmi" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" name="oyuncu_soyisim" placeholder="Oyuncu Soyismi" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" name="mevki" placeholder="Mevki" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" name="uyruk" placeholder="Uyruk" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="number" class="form-control" name="forma_no" placeholder="Forma Numarası" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="number" class="form-control" name="takim_id" placeholder="Takım ID" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="number" class="form-control" name="oyuncu_yas" placeholder="Yaş" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Oyuncu Ekle</button>
+                </form>
+
+                <form id="antremanEkleForm" class="mb-4">
+                    <h3>Antrenman Ekle</h3>
+                    <div class="mb-3">
+                        <input type="date" class="form-control" name="antreman_tarih" placeholder="Antrenman Tarihi" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" name="antreman_yer" placeholder="Antrenman Yeri" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" name="antreman_turu" placeholder="Antrenman Türü" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="number" class="form-control" name="antreman_antrenor_id" placeholder="Antrenör ID" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="number" class="form-control" name="takim_id" placeholder="Takım ID" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Antrenman Ekle</button>
+                </form>
+
+                <form id="sezonEkleForm" class="mb-4">
+                    <h3>Sezon Ekle</h3>
+                    <div class="mb-3">
+                        <input type="date" class="form-control" name="Baslangic_tarih" placeholder="Başlangıç Tarihi" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="date" class="form-control" name="Bitis_tarih" placeholder="Bitiş Tarihi" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Sezon Ekle</button>
+                </form>
+
+                <form id="macEkleForm" class="mb-4">
+                    <h3>Maç Ekle</h3>
+                    <div class="mb-3">
+                        <input type="date" class="form-control" name="mac_tarih" placeholder="Maç Tarihi" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="number" class="form-control" name="evsahibi_takim_id" placeholder="Ev Sahibi Takım ID" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="number" class="form-control" name="konuk_takim_id" placeholder="Konuk Takım ID" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="number" class="form-control" name="evsahibi_skor" placeholder="Ev Sahibi Skor" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="number" class="form-control" name="konuk_skor" placeholder="Konuk Skor" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="number" class="form-control" name="sezon_id" placeholder="Sezon ID" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Maç Ekle</button>
+                </form>
+
+                <form id="oyuncuMacEkleForm" class="mb-4">
+                    <h3>Oyuncu-Maç Ekle</h3>
+                    <div class="mb-3">
+                        <input type="number" class="form-control" name="oyuncu_id" placeholder="Oyuncu ID" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="number" class="form-control" name="mac_id" placeholder="Maç ID" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Ekle</button>
+                </form>
+
+                <!-- 14. Gol Ekle Formu -->
+                <form id="golEkleForm" class="mb-4">
+                    <h3>Gol Ekle</h3>
+                    <div class="mb-3">
+                        <input type="number" class="form-control" name="oyuncu_mac_id" placeholder="Oyuncu-Maç ID" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="number" class="form-control" name="takim_id" placeholder="Takım ID" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Gol Ekle</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header bg-info text-white">
+                <h2 class="card-title">Bilgi Görüntüleme</h2>
+            </div>
+            <div class="card-body">
+                <form id="kazandigiMaclarForm" class="mb-4">
+                    <h3>Takımın Kazandığı Maçlar</h3>
+                    <div class="mb-3">
+                        <input type="number" class="form-control" name="takim_id" placeholder="Takım ID" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Göster</button>
+                </form>
+
+                <form id="takimlarAntrenorlerForm" class="mb-4">
+                    <h3>Takımlar ve Antrenörler</h3>
+                    <button type="submit" class="btn btn-primary">Göster</button>
+                </form>
+
+                <form id="takimlarOyuncularForm" class="mb-4">
+                    <h3>Takımlar ve Oyuncular</h3>
+                    <button type="submit" class="btn btn-primary">Göster</button>
+                </form>
+
+                <form id="takimAntrenmanlariForm" class="mb-4">
+                    <h3>Takımın Antrenmanları</h3>
+                    <div class="mb-3">
+                        <input type="number" class="form-control" name="takim_id" placeholder="Takım ID" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Göster</button>
+                </form>
+
+                <form id="kaybettigiMaclarForm" class="mb-4">
+                    <h3>Takımın Kaybettiği Maçlar</h3>
+                    <div class="mb-3">
+                        <input type="number" class="form-control" name="takim_id" placeholder="Takım ID" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Göster</button>
+                </form>
+
+                <form id="berabereMaclarForm" class="mb-4">
+                    <h3>Takımın Berabere Kaldığı Maçlar</h3>
+                    <div class="mb-3">
+                        <input type="number" class="form-control" name="takim_id" placeholder="Takım ID" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Göster</button>
+                </form>
+
+                <form id="enGolcuOyuncuForm" class="mb-4">
+                    <h3>Takımın En Çok Gol Atan Oyuncusu</h3>
+                    <div class="mb-3">
+                        <input type="number" class="form-control" name="takim_id" placeholder="Takım ID" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Bul</button>
+                </form>
+
+                <!-- 16. Takımlar ve Oyuncular Formu (Tekrar) -->
+                <form id="takimlarOyuncularForm2" class="mb-4">
+                    <h3>Takımlar ve Oyuncular</h3>
+                    <button type="submit" class="btn btn-primary">Göster</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('takimlariGoster').addEventListener('click', function () {
+            const takimlarListesiDiv = document.getElementById('takimlarListesi');
+            if (takimlarListesiDiv.style.display === 'none') {
+                fetch('http://127.0.0.1:5000/takimlar')
+                    .then(response => response.json())
+                    .then(data => {
+                        const takimlarListesi = document.getElementById('takimlar');
+                        takimlarListesi.innerHTML = '';
+                        data.forEach(takim => {
+                            const li = document.createElement('li');
+                            li.className = 'list-group-item';
+                            li.textContent = `ID: ${takim.takim_id} - ${takim.takim_isim}`;
+                            takimlarListesi.appendChild(li);
+                        });
+                        takimlarListesiDiv.style.display = 'block';
+                    })
+                    .catch(error => console.error('Hata:', error));
+            } else {
+                takimlarListesiDiv.style.display = 'none';
+            }
+        });
+
+        document.getElementById('takimlariKapat').addEventListener('click', function () {
+            document.getElementById('takimlarListesi').style.display = 'none';
+        });
+
+        document.getElementById('antrenorleriGoster').addEventListener('click', function () {
+            const antrenorlerListesiDiv = document.getElementById('antrenorlerListesi');
+            if (antrenorlerListesiDiv.style.display === 'none') {
+                fetch('http://127.0.0.1:5000/antrenorler')
+                    .then(response => response.json())
+                    .then(data => {
+                        const antrenorlerListesi = document.getElementById('antrenorler');
+                        antrenorlerListesi.innerHTML = '';
+                        data.forEach(antrenor => {
+                            const li = document.createElement('li');
+                            li.className = 'list-group-item';
+                            li.textContent = `ID: ${antrenor.antrenor_id} - ${antrenor.antrenor_ad} ${antrenor.antrenor_soyad}`;
+                            antrenorlerListesi.appendChild(li);
+                        });
+                        antrenorlerListesiDiv.style.display = 'block';
+                    })
+                    .catch(error => console.error('Hata:', error));
+            } else {
+                antrenorlerListesiDiv.style.display = 'none';
+            }
+        });
+
+        document.getElementById('antrenorleriKapat').addEventListener('click', function () {
+            document.getElementById('antrenorlerListesi').style.display = 'none';
+        });
+
+        document.getElementById('antrenorEkleForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData.entries());
+
+            fetch('http://127.0.0.1:5000/antrenor-ekle', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message || 'Antrenör başarıyla eklendi.');
+            })
+            .catch(error => {
+                console.error('Hata:', error);
+                alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+            });
+        });
+
+        document.getElementById('takimEkleForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData.entries());
+
+            fetch('http://127.0.0.1:5000/takim-ekle', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message || 'Takım başarıyla eklendi.');
+            })
+            .catch(error => {
+                console.error('Hata:', error);
+                alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+            });
+        });
+
+        document.getElementById('oyuncuEkleForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData.entries());
+
+            fetch('http://127.0.0.1:5000/oyuncu-ekle', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message || 'Oyuncu başarıyla eklendi.');
+            })
+            .catch(error => {
+                console.error('Hata:', error);
+                alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+            });
+        });
+
+        document.getElementById('antremanEkleForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData.entries());
+
+            fetch('http://127.0.0.1:5000/antrenman-ekle', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message || 'Antrenman başarıyla eklendi.');
+            })
+            .catch(error => {
+                console.error('Hata:', error);
+                alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+            });
+        });
+
+        document.getElementById('sezonEkleForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData.entries());
+
+            fetch('http://127.0.0.1:5000/sezon-ekle', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message || 'Sezon başarıyla eklendi.');
+            })
+            .catch(error => {
+                console.error('Hata:', error);
+                alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+            });
+        });
+
+        document.getElementById('macEkleForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData.entries());
+
+            fetch('http://127.0.0.1:5000/mac-ekle', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message || 'Maç başarıyla eklendi.');
+            })
+            .catch(error => {
+                console.error('Hata:', error);
+                alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+            });
+        });
+
+        document.getElementById('kazandigiMaclarForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const takimID = document.querySelector('#kazandigiMaclarForm input').value;
+
+            fetch(`http://127.0.0.1:5000/takimlar/${takimID}/kazandigi-maclar`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        let maclarMesaji = 'Kazandığı Maçlar:\n';
+                        data.forEach(mac => {
+                            maclarMesaji += `Maç ID: ${mac.mac_id} - Tarih: ${mac.mac_tarih} - Skor: ${mac.evsahibi_skor}-${mac.konuk_skor}\n`;
+                        });
+                        alert(maclarMesaji);
+                    }
+                })
+                .catch(error => {
+                    console.error('Hata:', error);
+                    alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+                });
+        });
+
+        document.getElementById('takimlarAntrenorlerForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            fetch('http://127.0.0.1:5000/takimlar-antrenorler')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        let mesaj = 'Takımlar ve Antrenörler:\n';
+                        data.forEach(takim => {
+                            mesaj += `Takım: ${takim.takim_isim} - Antrenör: ${takim.antrenor_ad} ${takim.antrenor_soyad}\n`;
+                        });
+                        alert(mesaj);
+                    }
+                })
+                .catch(error => {
+                    console.error('Hata:', error);
+                    alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+                });
+        });
+
+        document.getElementById('takimlarOyuncularForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            fetch('http://127.0.0.1:5000/takimlar-oyuncular')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        let mesaj = 'Takımlar ve Oyuncular:\n';
+                        data.forEach(oyuncu => {
+                            mesaj += `Takım: ${oyuncu.takim_isim} - Oyuncu: ${oyuncu.oyuncu_isim} ${oyuncu.oyuncu_soyisim}\n`;
+                        });
+                        alert(mesaj);
+                    }
+                })
+                .catch(error => {
+                    console.error('Hata:', error);
+                    alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+                });
+        });
+
+        document.getElementById('takimAntrenmanlariForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const takimID = document.querySelector('#takimAntrenmanlariForm input').value;
+
+            fetch(`http://127.0.0.1:5000/takimlar/${takimID}/antrenmanlar`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        let mesaj = 'Antrenmanlar:\n';
+                        data.forEach(antrenman => {
+                            mesaj += `Tarih: ${antrenman.antreman_tarih} - Yer: ${antrenman.antreman_yer} - Tür: ${antrenman.antreman_turu}\n`;
+                        });
+                        alert(mesaj);
+                    }
+                })
+                .catch(error => {
+                    console.error('Hata:', error);
+                    alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+                });
+        });
+
+        document.getElementById('kaybettigiMaclarForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const takimID = document.querySelector('#kaybettigiMaclarForm input').value;
+
+            fetch(`http://127.0.0.1:5000/takimlar/${takimID}/kaybettigi-maclar`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        let mesaj = 'Kaybettiği Maçlar:\n';
+                        data.forEach(mac => {
+                            mesaj += `Maç ID: ${mac.mac_id} - Tarih: ${mac.mac_tarih} - Skor: ${mac.evsahibi_skor}-${mac.konuk_skor}\n`;
+                        });
+                        alert(mesaj);
+                    }
+                })
+                .catch(error => {
+                    console.error('Hata:', error);
+                    alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+                });
+        });
+
+        document.getElementById('berabereMaclarForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const takimID = document.querySelector('#berabereMaclarForm input').value;
+
+            fetch(`http://127.0.0.1:5000/takimlar/${takimID}/berabere-maclar`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        let mesaj = 'Berabere Kaldığı Maçlar:\n';
+                        data.forEach(mac => {
+                            mesaj += `Maç ID: ${mac.mac_id} - Tarih: ${mac.mac_tarih} - Skor: ${mac.evsahibi_skor}-${mac.konuk_skor}\n`;
+                        });
+                        alert(mesaj);
+                    }
+                })
+                .catch(error => {
+                    console.error('Hata:', error);
+                    alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+                });
+        });
+
+        document.getElementById('oyuncuMacEkleForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData.entries());
+
+            fetch('http://127.0.0.1:5000/oyuncu-mac-ekle', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message || 'Oyuncu-Maç başarıyla eklendi.');
+            })
+            .catch(error => {
+                console.error('Hata:', error);
+                alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+            });
+        });
+
+        document.getElementById('golEkleForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData.entries());
+
+            fetch('http://127.0.0.1:5000/gol-ekle', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message || 'Gol başarıyla eklendi.');
+            })
+            .catch(error => {
+                console.error('Hata:', error);
+                alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+            });
+        });
+
+        document.getElementById('enGolcuOyuncuForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const takimID = document.querySelector('#enGolcuOyuncuForm input').value;
+
+            fetch(`http://127.0.0.1:5000/takimlar/${takimID}/en-golcu-oyuncu`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        alert(`En Çok Gol Atan Oyuncu: ${data.oyuncu_isim} ${data.oyuncu_soyisim} (${data.gol_sayisi} gol)`);
+                    }
+                })
+                .catch(error => {
+                    console.error('Hata:', error);
+                    alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+                });
+        });
+
+        document.getElementById('takimlarOyuncularForm2').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            fetch('http://127.0.0.1:5000/takimlar-oyuncular')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        let mesaj = 'Takımlar ve Oyuncular:\n';
+                        data.forEach(oyuncu => {
+                            mesaj += `Takım: ${oyuncu.takim_isim} - Oyuncu: ${oyuncu.oyuncu_isim} ${oyuncu.oyuncu_soyisim}\n`;
+                        });
+                        alert(mesaj);
+                    }
+                })
+                .catch(error => {
+                    console.error('Hata:', error);
+                    alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+                });
+        });
+    </script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
